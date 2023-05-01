@@ -2,8 +2,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Home = () => {
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
   const [itemText, setItemText] = useState("");
   const [listItems, setListItems] = useState([]);
   const [isUpdating, setIsUpdating] = useState("");
@@ -19,17 +21,21 @@ const Home = () => {
   //add new todo item to database
   const addItem = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(
-        "https://to-do-server-three.vercel.app/api/item",
-        {
-          item: itemText,
-        }
-      );
-      setListItems((prev) => [...prev, res.data]);
-      setItemText("");
-    } catch (err) {
-      console.log(err);
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    } else {
+      try {
+        const res = await axios.post(
+          "https://to-do-server-three.vercel.app/api/item",
+          {
+            item: itemText,
+          }
+        );
+        setListItems((prev) => [...prev, res.data]);
+        setItemText("");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
