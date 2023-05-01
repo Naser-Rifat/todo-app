@@ -69,7 +69,7 @@ const Navbar = () => {
           </a>
 
           {/* <!-- Login --> */}
-          {isAuthenticated ? (
+          {!isAuthenticated ? (
             <button
               onClick={() => loginWithRedirect()}
               className="flex 
