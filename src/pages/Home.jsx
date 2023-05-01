@@ -56,33 +56,41 @@ const Home = () => {
 
   // Delete item when click on delete
   const deleteItem = async (id) => {
-    try {
-      await axios.delete(
-        `https://to-do-server-three.vercel.app/api/item/${id}`
-      );
-      const newListItems = listItems.filter((item) => item._id !== id);
-      setListItems(newListItems);
-    } catch (err) {
-      console.log(err);
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    } else {
+      try {
+        await axios.delete(
+          `https://to-do-server-three.vercel.app/api/item/${id}`
+        );
+        const newListItems = listItems.filter((item) => item._id !== id);
+        setListItems(newListItems);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   //Update item
   const updateItem = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.put(
-        `https://to-do-server-three.vercel.app/api/item/${isUpdating}`,
-        { item: updateItemText }
-      );
-      const updatedItemIndex = listItems.findIndex(
-        (item) => item._id === isUpdating
-      );
-      const updatedItem = (listItems[updatedItemIndex].item = updateItemText);
-      setUpdateItemText("");
-      setIsUpdating("");
-    } catch (err) {
-      console.log(err);
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    } else {
+      try {
+        await axios.put(
+          `https://to-do-server-three.vercel.app/api/item/${isUpdating}`,
+          { item: updateItemText }
+        );
+        const updatedItemIndex = listItems.findIndex(
+          (item) => item._id === isUpdating
+        );
+        listItems[updatedItemIndex].item = updateItemText;
+        setUpdateItemText("");
+        setIsUpdating("");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   //before updating item we need to show input field where we will create our updated item
