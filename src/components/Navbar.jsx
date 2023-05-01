@@ -1,6 +1,9 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const { loginWithRedirect } = useAuth0();
+
   return (
     <div className="flex flex-col">
       {/* <!-- Page Scroll Progress --> */}
@@ -68,6 +71,7 @@ const Navbar = () => {
           {/* <!-- Login --> */}
           <NavLink
             to={"sign-in"}
+            onClick={() => loginWithRedirect()}
             className="flex 
                     cursor-pointer transition-colors duration-300
                     font-semibold text-blue-600"
