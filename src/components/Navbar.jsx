@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
+    useAuth0();
 
   return (
     <div className="flex flex-col">
@@ -69,25 +69,37 @@ const Navbar = () => {
           </a>
 
           {/* <!-- Login --> */}
-          <NavLink
-            to={"sign-in"}
-            onClick={() => loginWithRedirect()}
-            className="flex 
+          {isAuthenticated ? (
+            <button
+              onClick={() => loginWithRedirect()}
+              className="flex 
                     cursor-pointer transition-colors duration-300
                     font-semibold text-blue-600"
-          >
-            <svg
-              className="fill-current h-5 w-5 mr-2 mt-0.5"
-              xmlns="http://www.w3.org/2000/svg"
-              version="1.1"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
             >
-              <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z" />
-            </svg>
-            Login
-          </NavLink>
+              <svg
+                className="fill-current h-5 w-5 mr-2 mt-0.5"
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z" />
+              </svg>
+              Login
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                logout({ logoutParams: { returnTo: window.location.origin } })
+              }
+              className="flex 
+                    cursor-pointer transition-colors duration-300
+                    font-semibold text-blue-600"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </nav>
     </div>
