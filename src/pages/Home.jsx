@@ -74,23 +74,20 @@ const Home = () => {
   //Update item
   const updateItem = async (e) => {
     e.preventDefault();
-    if (!isAuthenticated) {
-      loginWithRedirect();
-    } else {
-      try {
-        await axios.put(
-          `https://to-do-server-three.vercel.app/api/item/${isUpdating}`,
-          { item: updateItemText }
-        );
-        const updatedItemIndex = listItems.findIndex(
-          (item) => item._id === isUpdating
-        );
-        listItems[updatedItemIndex].item = updateItemText;
-        setUpdateItemText("");
-        setIsUpdating("");
-      } catch (err) {
-        console.log(err);
-      }
+
+    try {
+      await axios.put(
+        `https://to-do-server-three.vercel.app/api/item/${isUpdating}`,
+        { item: updateItemText }
+      );
+      const updatedItemIndex = listItems.findIndex(
+        (item) => item._id === isUpdating
+      );
+      listItems[updatedItemIndex].item = updateItemText;
+      setUpdateItemText("");
+      setIsUpdating("");
+    } catch (err) {
+      console.log(err);
     }
   };
   //before updating item we need to show input field where we will create our updated item
